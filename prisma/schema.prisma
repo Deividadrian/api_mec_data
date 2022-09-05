@@ -11,8 +11,11 @@ datasource db {
 }
 
 model Universities {
-  id   String @id @default(uuid())
-  name String
+  id    String @id @default(uuid())
+  sigla String
+  name  String
+  city  String
+  state String
 
   @@map("universities")
 }

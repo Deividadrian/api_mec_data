@@ -10,7 +10,10 @@ const multerConfig = multer();
 const router = Router();
 
 interface Universities {
-  name: string
+  sigla: string;
+  name: string;
+  city: string;
+  state: string;
 }
 
 router.post("/universities", multerConfig.single("file"), async (request:Request, response:Response) => {
@@ -32,20 +35,27 @@ router.post("/universities", multerConfig.single("file"), async (request:Request
     const universitiesLineSplit = line.split(";");
     
     universities.push({
+      sigla: universitiesLineSplit[1],
       name: universitiesLineSplit[2],
+      city: universitiesLineSplit[31],
+      state: universitiesLineSplit[32],
     })
     //console.log(universitiesLineSplit[2]);
   }
 
-  for await ( let {name} of universities) {
+  for await ( let { sigla , name, city, state } of universities) {
     await client.universities.create({
       data: {
-        name
-      }
-    })
+        sigla,
+        name,
+        city,
+        state,
+      },
+    });
   }
 
-  return response.json(universities);
-});
+    return response.json(universities);
+  }
+);
 
 export { router };

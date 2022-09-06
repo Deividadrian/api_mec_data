@@ -32,7 +32,7 @@ router.post("/universities", multerConfig.single("file"), async (request:Request
   const universities: Universities[] = []
 
   for await(let line of universitiesLine) {
-    const universitiesLineSplit = line.split(";");
+      const universitiesLineSplit = line.split(";");
     
     universities.push({
       sigla: universitiesLineSplit[1],
@@ -43,7 +43,7 @@ router.post("/universities", multerConfig.single("file"), async (request:Request
     //console.log(universitiesLineSplit[2]);
   }
 
-  for await ( let { sigla , name, city, state } of universities) {
+  for await ( let { sigla , name, city, state } of universities.slice(1)) {
     await client.universities.create({
       data: {
         sigla,
@@ -54,7 +54,7 @@ router.post("/universities", multerConfig.single("file"), async (request:Request
     });
   }
 
-    return response.json(universities);
+    return response.json(universities.slice(1));
   }
 );
 
